@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  addUser,
+  deleteUser,
+  updateUser,
+  fetchUsers,
+} from "../../redux/slices/adminSlice";
 
 export default function UserManagement() {
-  const users = [
-    {
-      _id: 122,
-      name: "John doe",
-      email: "john12@gmail.com",
-      role: "admin",
-    },
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const { users, loading, error } = useSelector((state) => state.admin);
+  console.log("users========================>users", users);
+  useEffect(() => {
+    if (user && user.role !== "admin") {
+      navigate("/");
+    }
+    dispatch(fetchUsers());
+  }, [dispatch, user, navigate]);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,10 +36,12 @@ export default function UserManagement() {
     });
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-
+    await dispatch(addUser(formData));
+    // Fetch the latest users from database
+    dispatch(fetchUsers());
     // Reset the form after submission
     setFormData({
       name: "",
@@ -36,17 +50,23 @@ export default function UserManagement() {
       role: "customer",
     });
   };
-  const handelRoleChange = (userId, newRole) => {
+  const handelRoleChange = async (userId, newRole) => {
     console.log({ id: userId, role: newRole });
+    await dispatch(updateUser({ id: userId, role: newRole }));
+    // Fetch the latest users from database
+    dispatch(fetchUsers());
   };
   const handelDeleteUser = (userId) => {
     if (window.confirm("Are you sure you want to delete this user?"))
       console.log("Deleting user with ID", userId);
+    dispatch(deleteUser(userId));
   };
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">User Management</h2>
       {/* Add New User Form */}
+      {loading && <p>Loading ...</p>}
+      {error && <p>Error: {error} ...</p>}
       <div className="p-6 rounded-lg mb-6">
         <h3 className="text-lg font-bold mb-4">Add New User</h3>
         <form onSubmit={handelSubmit}>

@@ -22,7 +22,10 @@ router.get("/orders", protect, admin, async (req, res) => {
 // @access Private/Admin
 router.put("/orders/:id", protect, admin, async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      "user",
+      "name email",
+    );
     if (order) {
       order.status = req.body.status || order.status;
       order.isDelivered =

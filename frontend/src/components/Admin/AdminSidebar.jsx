@@ -7,15 +7,23 @@ import {
   FaStore,
   FaUser,
 } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 
 export default function AdminSidebar() {
   const navigate = useNavigate();
-  const handelLogout = () => {};
+  const dispatch = useDispatch();
+  const handelLogout = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+    navigate("/");
+  };
   return (
     <div className="p-6">
       <div className="mb-6">
         <Link className="text-2xl font-medium" to="/admin">
-          Rabbit
+          StyleCart
         </Link>
       </div>
       <h2 className="text-xl font-medium mb-6 items-center">Admin Dashboard</h2>
@@ -67,7 +75,7 @@ export default function AdminSidebar() {
       </nav>
       <div className="mt-6">
         <button
-          className="bg-red-600 text-white py-2 px-4 items-center justify-center space-x-2 flex rounded-lg hover:bg-red-500 w-full"
+          className="bg-red-600 cursor-pointer text-white py-2 px-4 items-center justify-center space-x-2 flex rounded-lg hover:bg-red-500 w-full"
           onClick={handelLogout}
         >
           <FaSignOutAlt />

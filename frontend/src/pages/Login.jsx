@@ -12,7 +12,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const navegate = useNavigate();
   const location = useLocation();
-  const { user, guestId } = useSelector((state) => state.auth);
+  const { user, guestId, loading } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
 
   // Get redirect parameter and check if it's checkout or something
@@ -74,7 +74,7 @@ export default function Login() {
             type="submit"
             className="w-full bg-black text-white font-semibold p-2 hover:bg-gray-200 transition cursor-pointer mb-4"
           >
-            Sign In
+            {loading ? "Loading..." : "Sign In"}
           </button>
           <p className="mb-6 text-center text-sm">
             Don't have an account?{" "}

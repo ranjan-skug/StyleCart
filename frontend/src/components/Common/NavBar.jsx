@@ -14,6 +14,7 @@ export default function NavBar() {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
 
   const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
 
   const cartItemCount =
     cart?.products?.reduce((total, product) => total + product.quantity, 0) ||
@@ -64,12 +65,15 @@ export default function NavBar() {
           </div>
           {/* {Right icons} */}
           <div className="flex items-center gap-4">
-            <Link
-              to="/admin"
-              className="text-white bg-black text-sm px-2 rounded"
-            >
-              Admin
-            </Link>
+            {user && user.role === "admin" && (
+              <Link
+                to="/admin"
+                className="text-white bg-black text-sm px-2 rounded"
+              >
+                Admin
+              </Link>
+            )}
+
             <Link
               to="profile"
               className="hover:text-black text-gray-700 text-sm font-medium uppercase"

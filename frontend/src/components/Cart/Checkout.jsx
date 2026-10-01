@@ -61,11 +61,7 @@ export default function Checkout() {
       );
       console.log("response========================>checkout-response-here");
       console.log(response);
-      if (response.status === 200) {
-        await handelFinalizeCheckout(checkoutId); //finalize checkout if payment is succesfull
-      } else {
-        console.error(error);
-      }
+      await handelFinalizeCheckout(checkoutId); //finalize checkout if payment is succesfull
     } catch (error) {
       console.error(error);
     }
@@ -82,11 +78,7 @@ export default function Checkout() {
           },
         },
       );
-      if (response.status === 200 || response.status === 201) {
-        navigate("/order-confirmation");
-      } else {
-        console.error(error);
-      }
+      navigate("/order-confirmation");
     } catch (error) {
       console.error(error);
     }

@@ -143,8 +143,35 @@ router.post("/", protect, admin, async (req, res) => {
 // });
 
 //Short Version
-router.put("/:id", protect, async (req, res) => {
+// router.put("/:id", protect, async (req, res) => {
+//   try {
+//     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//       runValidators: true,
+//     });
+
+//     if (!product) {
+//       return res.status(404).json({
+//         message: "Product not found",
+//       });
+//     }
+
+//     res.status(200).json(product);
+//   } catch (error) {
+//     console.error(error);
+
+//     res.status(500).json({
+//       message: "Server Error",
+//       error: error.message,
+//     });
+//   }
+// });
+
+router.put("/:id", protect, admin, async (req, res) => {
   try {
+    console.log("UPDATE PRODUCT ID:", req.params.id);
+    console.log("UPDATE PRODUCT DATA:", req.body);
+
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -158,7 +185,7 @@ router.put("/:id", protect, async (req, res) => {
 
     res.status(200).json(product);
   } catch (error) {
-    console.error(error);
+    console.error("UPDATE PRODUCT ERROR:", error);
 
     res.status(500).json({
       message: "Server Error",

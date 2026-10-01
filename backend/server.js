@@ -44,6 +44,10 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/admin", productAdminRoutes);
 app.use("/api/admin", orderAdminRoutes);
 
-app.listen(port, () => {
-  console.log(`Server is running on PORT: ${port}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`Server is running on PORT: ${port}`);
+  });
+}
+
+module.exports = app;

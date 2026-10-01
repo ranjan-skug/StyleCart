@@ -34,7 +34,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center">
           {/* Left - Logo */}
           <div className="text-xl font-bold">
-            <Link to="/">WearHouse</Link>
+            <Link to="/">StyleCart</Link>
           </div>
           {/* Middle - Navigation Links */}
           <div className="hidden md:flex items-center gap-4">

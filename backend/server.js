@@ -1,9 +1,12 @@
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+
 const connectDB = require("./config/db");
+
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
@@ -18,17 +21,20 @@ const orderAdminRoutes = require("./routes/orderAdminRoutes");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
 
 const port = process.env.PORT || 8800;
 
-// Connection with MongoDB
+// MongoDB
 connectDB();
-app.get("/", (req, res) => {
-  //   res.status(200).json({
-  //     message: "Hello and Welcome",
-  //   });
 
+app.get("/", (req, res) => {
   res.send("Hello And Welcome");
 });
 
@@ -44,10 +50,12 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/admin", productAdminRoutes);
 app.use("/api/admin", orderAdminRoutes);
 
+// Local development only
 if (process.env.NODE_ENV !== "production") {
   app.listen(port, () => {
     console.log(`Server is running on PORT: ${port}`);
   });
 }
 
+// Vercel
 module.exports = app;
